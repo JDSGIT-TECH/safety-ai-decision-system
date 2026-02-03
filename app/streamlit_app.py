@@ -1,6 +1,44 @@
+import os
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+
+#Load replay data
+DATA_PATH = "outputs/safety_timeline_replay.csv"
+
+@st.cache_data
+def load_data():
+    if not os.path.exists(DATA_PATH):
+        return None
+    return pd.read_csv(DATA_PATH, parse_dates=["timestamp"])
+
+#df=load_data()
+#df=df.sort_values("timestamp")
+
+df = load_data()
+
+uploaded_file = st.file_uploader(
+    "Upload safety replay CSV (optional)",
+    type=["csv"]
+)
+
+if uploaded_file is not None:
+    df = pd.read_csv(uploaded_file, parse_dates=["timestamp"])
+
+if df is None:
+    st.error("⚠️ Safety replay data not found.")
+    st.info(
+        "This dashboard expects a batch replay output file:\n\n"
+        "`outputs/safety_timeline_replay.csv`\n\n"
+        "To generate it:\n"
+        "1. Run batch_replay_simulation.py locally\n"
+        "2. Upload the generated CSV\n\n"
+        "This is intentional to keep the public repo clean."
+    )
+    st.stop()
+
+df = df.sort_values("timestamp")
+
 
 st.warning(
     "🔒 This dashboard is READ-ONLY. "
@@ -18,8 +56,6 @@ st.markdown(
     """
 )
 
-#Load replay data
-DATA_PATH = "outputs/safety_timeline_replay.csv"
 
 '''
 Hardening the Streamlit app (code changes)
@@ -29,12 +65,9 @@ A. Disable file uploads completely
 
 B. Lock data source
 '''
-@st.cache_data
-def load_data():
-    return pd.read_csv(DATA_PATH, parse_dates=["timestamp"])
 
-df=load_data()
-df=df.sort_values("timestamp")
+
+
 
 #High-level metrics
 st.header("📊 High-Level Safety Summary")
