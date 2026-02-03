@@ -1,0 +1,8 @@
+=== Safety Breach Replay Summary ===
+Total Samples Replayed: 5000
+
+Normal Count: 4741
+Warning Count: 210
+Critical Count: 49
+First Warning Detected at: 2024-01-01 00:23:00
+First Critical Detected at: 2024-01-01 02:59:00
