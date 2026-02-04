@@ -22,6 +22,13 @@ models/
 *.pkl
 
 # ===============================
+# Outputs (NEVER PUBLIC EXCEPT DEMO)
+# ===============================
+outputs/*
+!outputs/demo_safety_timeline.csv
+!outputs/safety_replay_summary.txt
+
+# ===============================
 # Internal Training & Experiments
 # ===============================
 src/
